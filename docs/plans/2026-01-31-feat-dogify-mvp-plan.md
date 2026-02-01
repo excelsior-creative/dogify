@@ -39,25 +39,33 @@ Build a viral "What Dog Are You?" web app where users upload a friend's photo + 
 
 ## Implementation Tasks
 
-### Phase 1: Core MVP
-- [ ] Set up project structure
-- [ ] Create landing page with upload form
-- [ ] Implement voice-to-text for personality input
-- [ ] Build personality → dog breed matching logic
-- [ ] Integrate Nano Banana Pro for image generation
-- [ ] Create results page with sharing options
+### Phase 1: Core MVP ✅
+- [x] Set up project structure (Next.js 16, Tailwind)
+- [x] Create landing page with upload form
+- [x] Implement voice-to-text for personality input (Web Speech API)
+- [x] Build personality → dog breed matching logic (Gemini)
+- [x] Integrate Nano Banana Pro for image generation
+- [x] Create results page with sharing options
 
-### Phase 2: Freemium & Polish
-- [ ] Set up Neon database
-- [ ] Implement usage tracking (IP-based for free tier)
-- [ ] Add watermark to free tier results
-- [ ] Integrate Stripe for payments
+### Phase 2: Freemium & Polish ✅
+- [ ] Set up Neon database (using IP-based for MVP)
+- [x] Implement usage tracking (IP-based for free tier)
+- [x] Add watermark to free tier results
+- [x] Integrate Stripe for payments (checkout + webhook)
 - [ ] Add account system (optional - can use IP initially)
 
-### Phase 3: Viral Features
-- [ ] Social sharing (Twitter, Instagram, iMessage)
-- [ ] "Make Your Friend a Dog" referral flow
-- [ ] Gallery of recent dogs (opt-in)
+### Phase 3: Viral Features ✅
+- [x] Social sharing (X, Facebook, WhatsApp, iMessage)
+- [x] "Make Your Friend a Dog" referral flow (share buttons)
+- [ ] Gallery of recent dogs (opt-in) - future
+
+### Setup Required
+- [ ] Add STRIPE_SECRET_KEY to Vercel
+- [ ] Add STRIPE_WEBHOOK_SECRET to Vercel
+- [ ] Create Stripe webhook endpoint (dogify-zeta.vercel.app/api/stripe/webhook)
+- [ ] Create/assign X account (@dogifyapp?)
+- [ ] Create OG image for social sharing
+- [ ] Purchase custom domain (dogify.app?)
 
 ## Acceptance Criteria
 
