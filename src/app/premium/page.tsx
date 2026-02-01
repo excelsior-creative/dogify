@@ -1,8 +1,34 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 
 export default function PremiumPage() {
+  const [loading, setLoading] = useState<string | null>(null);
+
+  const handleCheckout = async (priceType: "subscription" | "onetime") => {
+    setLoading(priceType);
+    try {
+      const response = await fetch("/api/stripe/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ priceType }),
+      });
+
+      const data = await response.json();
+
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        throw new Error(data.error || "Failed to start checkout");
+      }
+    } catch (error) {
+      console.error("Checkout error:", error);
+      alert("Something went wrong. Please try again.");
+      setLoading(null);
+    }
+  };
+
   return (
     <main className="min-h-screen bg-gradient-to-b from-purple-900 to-pink-900 py-12">
       <div className="max-w-lg mx-auto px-4">
@@ -56,11 +82,33 @@ export default function PremiumPage() {
 
             {/* Pricing */}
             <div className="space-y-3 pt-4">
-              <button className="w-full py-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-xl font-bold text-lg hover:from-purple-600 hover:to-pink-600 transition-all shadow-lg">
-                Subscribe - $2.99/month
+              <button
+                onClick={() => handleCheckout("subscription")}
+                disabled={loading !== null}
+                className="w-full py-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-xl font-bold text-lg hover:from-purple-600 hover:to-pink-600 transition-all shadow-lg disabled:opacity-50"
+              >
+                {loading === "subscription" ? (
+                  <span className="flex items-center justify-center gap-2">
+                    <span className="animate-spin">⏳</span>
+                    Loading...
+                  </span>
+                ) : (
+                  "Subscribe - $2.99/month"
+                )}
               </button>
-              <button className="w-full py-4 bg-gray-100 text-gray-800 rounded-xl font-bold hover:bg-gray-200 transition-all">
-                One-Time - $0.99 per dog
+              <button
+                onClick={() => handleCheckout("onetime")}
+                disabled={loading !== null}
+                className="w-full py-4 bg-gray-100 text-gray-800 rounded-xl font-bold hover:bg-gray-200 transition-all disabled:opacity-50"
+              >
+                {loading === "onetime" ? (
+                  <span className="flex items-center justify-center gap-2">
+                    <span className="animate-spin">⏳</span>
+                    Loading...
+                  </span>
+                ) : (
+                  "One-Time - $0.99 per dog"
+                )}
               </button>
             </div>
 

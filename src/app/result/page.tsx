@@ -26,21 +26,38 @@ export default function ResultPage() {
     }
   }, [router]);
 
-  const shareUrl = typeof window !== "undefined" ? window.location.origin : "";
+  const shareUrl = typeof window !== "undefined" ? window.location.origin : "https://dogify-zeta.vercel.app";
+  const shareText = `I just turned my friend into a ${result?.dogBreed}! 🐕 Find out what dog YOU are:`;
 
   const handleShare = async (platform: string) => {
-    const text = `I just turned my friend into a ${result?.dogBreed}! 🐕 Find out what dog YOU are:`;
-    const url = shareUrl;
-
     switch (platform) {
       case "twitter":
         window.open(
-          `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`,
+          `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}`,
+          "_blank"
+        );
+        break;
+      case "facebook":
+        window.open(
+          `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}&quote=${encodeURIComponent(shareText)}`,
+          "_blank"
+        );
+        break;
+      case "whatsapp":
+        window.open(
+          `https://wa.me/?text=${encodeURIComponent(shareText + " " + shareUrl)}`,
+          "_blank"
+        );
+        break;
+      case "imessage":
+        // SMS/iMessage link
+        window.open(
+          `sms:&body=${encodeURIComponent(shareText + " " + shareUrl)}`,
           "_blank"
         );
         break;
       case "copy":
-        await navigator.clipboard.writeText(`${text} ${url}`);
+        await navigator.clipboard.writeText(`${shareText} ${shareUrl}`);
         setCopied(true);
         setTimeout(() => setCopied(false), 2000);
         break;
@@ -110,14 +127,43 @@ export default function ResultPage() {
               ))}
             </div>
 
-            {/* Share Buttons */}
+            {/* Share Buttons - Viral Focus */}
             <div className="space-y-3 pt-4">
-              <button
-                onClick={() => handleShare("twitter")}
-                className="w-full py-3 bg-black text-white rounded-xl font-bold hover:bg-gray-800 transition-all"
-              >
-                𝕏 Share on X
-              </button>
+              <p className="text-center text-gray-600 font-medium text-sm">
+                🔥 Share with your friends!
+              </p>
+              
+              {/* Primary share buttons */}
+              <div className="grid grid-cols-2 gap-3">
+                <button
+                  onClick={() => handleShare("imessage")}
+                  className="py-3 bg-green-500 text-white rounded-xl font-bold hover:bg-green-600 transition-all"
+                >
+                  💬 iMessage
+                </button>
+                <button
+                  onClick={() => handleShare("whatsapp")}
+                  className="py-3 bg-green-600 text-white rounded-xl font-bold hover:bg-green-700 transition-all"
+                >
+                  📱 WhatsApp
+                </button>
+              </div>
+              
+              <div className="grid grid-cols-2 gap-3">
+                <button
+                  onClick={() => handleShare("facebook")}
+                  className="py-3 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-700 transition-all"
+                >
+                  📘 Facebook
+                </button>
+                <button
+                  onClick={() => handleShare("twitter")}
+                  className="py-3 bg-black text-white rounded-xl font-bold hover:bg-gray-800 transition-all"
+                >
+                  𝕏 Post
+                </button>
+              </div>
+
               <button
                 onClick={() => handleShare("copy")}
                 className="w-full py-3 bg-gray-100 text-gray-800 rounded-xl font-bold hover:bg-gray-200 transition-all"
@@ -148,14 +194,17 @@ export default function ResultPage() {
           </div>
         </div>
 
-        {/* Make another */}
-        <div className="text-center mt-8">
+        {/* Make another - CTA */}
+        <div className="text-center mt-8 space-y-4">
           <Link
             href="/"
             className="inline-block bg-white text-amber-900 px-8 py-4 rounded-xl font-bold shadow-lg hover:shadow-xl transition-all"
           >
             🐕 Dogify Another Friend
           </Link>
+          <p className="text-amber-800 text-sm">
+            Who else needs to know their inner dog? 🤔
+          </p>
         </div>
       </div>
     </main>
