@@ -87,9 +87,15 @@ export default function Home() {
         router.push("/result");
       };
     } catch (err: any) {
+      console.error("Dogify error:", err);
       setError(err.message || "Failed to generate. Please try again.");
       setIsLoading(false);
     }
+  };
+
+  const handleRetry = () => {
+    setError(null);
+    // Don't clear the form, just let them try again
   };
 
   return (
@@ -171,8 +177,15 @@ export default function Home() {
 
           {/* Error */}
           {error && (
-            <div className="bg-red-100 text-red-700 p-4 rounded-xl">
-              {error}
+            <div className="bg-red-100 text-red-700 p-4 rounded-xl space-y-2">
+              <p>{error}</p>
+              <button
+                type="button"
+                onClick={handleRetry}
+                className="text-sm underline font-medium"
+              >
+                Try again
+              </button>
             </div>
           )}
 
